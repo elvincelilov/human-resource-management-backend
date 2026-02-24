@@ -12,15 +12,6 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponseDto> handleRuntimeException(RuntimeException ex) {
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto();
-        errorResponseDto.setMessage(ex.getMessage());
-        errorResponseDto.setStatus(HttpStatus.BAD_REQUEST.value());
-        errorResponseDto.setTimestamp(LocalDateTime.now());
-        return  ResponseEntity.badRequest().body(errorResponseDto);
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDto> handleValidation(MethodArgumentNotValidException ex) {
 
@@ -28,24 +19,29 @@ public class GlobalExceptionHandler {
                 .getFieldError()
                 .getDefaultMessage();
 
-        ErrorResponseDto error = new ErrorResponseDto();
-        error.setStatus(HttpStatus.BAD_REQUEST.value());
-        error.setMessage(message);
-        error.setTimestamp(LocalDateTime.now());
+        return buildError(message, HttpStatus.BAD_REQUEST);
+    }
 
-        return ResponseEntity.badRequest().body(error);
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponseDto> handleRuntimeException(RuntimeException ex) {
+        return buildError(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleException(Exception ex) {
-        ex.printStackTrace();
+
+        return buildError("Unexpected error occurred",
+                HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private ResponseEntity<ErrorResponseDto> buildError(String message,
+                                                        HttpStatus status) {
+
         ErrorResponseDto error = new ErrorResponseDto();
-        error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-        error.setMessage(ex.getMessage());
-//        error.setMessage("Unexpected error occurred");
+        error.setMessage(message);
+        error.setStatus(status.value());
         error.setTimestamp(LocalDateTime.now());
 
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(error);
+        return ResponseEntity.status(status).body(error);
     }
 }
