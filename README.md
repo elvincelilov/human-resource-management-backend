@@ -108,23 +108,65 @@ All endpoints can be tested interactively via Swagger.
 ---
 
 ## ⚙ Running Locally
-
-1. Configure `application.properties`:
-  - spring.datasource.url=jdbc:mysql://localhost:3306/hrm_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-  - spring.datasource.username=root
-  - spring.datasource.password=admin
-  - server.port=9009
-2. Run:
+Run:
   - mvn clean install
   - mvn spring-boot:run
 
-##  Docker (Coming Soon)
+#  Docker Configuration
 
-Dockerfile and docker-compose configuration will allow running the application together with MySQL in containers.
+## Dockerfile (Multi-Stage)
+
+Stage 1 — Build:
+
+- Maven 3.9 + Temurin 17
+- Dependency caching
+- Package fat JAR
+
+Stage 2 — Runtime:
+
+- eclipse-temurin:17-jre-jammy
+- Exposes port 9009
+- Runs: `java -jar app.jar`
 
 ---
 
-## 🗄 Database
+## docker-compose.yml
+
+Services:
+
+### MySQL
+- Image: mysql:8.0
+- Database: hrm_db
+- Port: 3309 → 3306
+- Persistent volume: mysql_data
+
+### Spring Boot App
+- Port: 9009
+- Environment-based DB configuration
+- Depends on MySQL
+
+Internal connection:  jdbc:mysql://mysql:3306/hrm_db
+
+---
+
+#  Environment Configuration
+
+Uses environment variables:
+- SPRING_DATASOURCE_URL : mysql://localhost:3306/hrm_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+- SPRING_DATASOURCE_USERNAME : root
+- SPRING_DATASOURCE_PASSWORD : admin
+- SERVER_PORT : 9009
+
+application.properties:
+
+- spring.datasource.url=${SPRING_DATASOURCE_URL}
+- spring.datasource.username=${SPRING_DATASOURCE_USERNAME}
+- spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}
+- server.port=${SERVER_PORT}
+
+---
+
+##  Database
 
 Entities:
 
