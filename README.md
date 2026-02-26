@@ -26,12 +26,12 @@ This project demonstrates secure role-based backend architecture with real busin
 
 Client (Swagger / Postman / Frontend)
 ↓
-Spring Boot REST API
-├─ Security (JWT Filter)
-├─ Controllers (Admin / Employee / Auth)
-├─ Services (Business Logic)
-├─ Repositories (JPA)
-└─ MySQL Database
+Spring Boot REST API 
+- Security (JWT Filter)
+- Controllers (Admin / Employee / Auth)
+- Services (Business Logic)
+- Repositories (JPA)
+- MySQL Database
 
 ### Key Design Decisions
 
@@ -98,14 +98,6 @@ Authorization header example:
 
 ---
 
-## API Documentation
-
-Swagger UI available at:
-http://localhost:9009/swagger-ui/index.html
-
-All endpoints can be tested interactively via Swagger.
-
----
 
 ## ⚙ Running Locally
 Run:
@@ -191,6 +183,62 @@ API can be tested using:
 JWT token must be included in the Authorization header for protected endpoints.
 
 ---
+## API Documentation (Swagger UI)
+
+Swagger UI (Local):
+http://localhost:9009/swagger-ui/index.html
+
+The following screenshots demonstrate real API execution,
+role-based access control, and business logic validation.
+
+---
+
+### Authentication — Register
+![Register](docs/swagger/hm%20test%20register.png)
+
+### Authentication — Login
+![Login](docs/swagger/hm%20test%20login.png)
+
+---
+
+## ADMIN Operations
+
+### Admin Dashboard
+![Admin Dashboard](docs/swagger/hrm%20admin%20dashboard.png)
+
+### Add New Project
+![Add Project](docs/swagger/hrm%20admin%20add%20project.png)
+
+### Assign Project to Employee
+![Assign Project](docs/swagger/hrm%20admin%20add%20project%20to%20employee.png)
+
+### Add Salary Record
+![Add Salary](docs/swagger/hrm%20admin%20add%20salary.png)
+
+### Leave Report
+![Leave Report](docs/swagger/hrm%20admin%20leave%20report.png)
+
+### Projects Management
+![Projects](docs/swagger/hrm%20admin%20projects.png)
+
+### Reports
+![Reports](docs/swagger/hrm%20admin%20reports.png)
+
+### Access Rejected (Role Protection)
+![Access Rejected](docs/swagger/hrm%20admin%20approve_rejected.png)
+
+---
+
+## EMPLOYEE Operations
+
+### Employee Dashboard
+![Employee Dashboard](docs/swagger/hrm%20employee%20profile.png)
+
+### Employee Projects
+![Employee Projects](docs/swagger/hrm%20employee%20projects.png)
+
+### Employee Salary View
+![Employee Salary](docs/swagger/hrm%20employee%20salary.png)
 
 ##  Future Improvements
 
